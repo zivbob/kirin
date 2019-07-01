@@ -1,0 +1,11 @@
+eureka:
+  instance:
+    # 主机名称
+    hostname: lcoalhost
+  client:
+    # 是否注册到注册中心
+    register-with-eureka: false
+    # 是否获取服务器的注册信息
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
