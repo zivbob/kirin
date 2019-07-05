@@ -9,4 +9,4 @@ spring:
       server:
         git:
           uri: https://github.com/zivbob/kirin
-          search-paths: config
+          search-paths: config-file
