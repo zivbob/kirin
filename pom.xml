@@ -18,6 +18,9 @@
 
     <modules>
         <module>kirin-eureka</module>
+        <module>kirin-data-service</module>
+        <module>kirin-data-ribbon</module>
+        <module>kirin-data-feign</module>
     </modules>
 
     <properties>
@@ -33,6 +36,7 @@
         <commons-codec.version>1.9</commons-codec.version>
         <lombok.version>1.18.8</lombok.version>
         <hutool.version>4.5.16</hutool.version>
+        <zipkin.version>2.10.1</zipkin.version>
     </properties>
 
     <!--公共依赖-->
