@@ -6,13 +6,13 @@
         <groupId>com.ziv</groupId>
         <artifactId>kirin</artifactId>
         <version>1.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.ziv</groupId>
+
     <artifactId>kirin-eureka</artifactId>
-    <version>1.0</version>
+    <version>${kirin.version}</version>
     <name>kirin-eureka</name>
     <description>服务注册中心</description>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -20,26 +20,5 @@
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
