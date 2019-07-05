@@ -1,0 +1,12 @@
+server:
+  port: 8900
+
+spring:
+  application:
+    name: kirin-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/zivbob/kirin
+          search-paths: config
