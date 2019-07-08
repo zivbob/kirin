@@ -2,11 +2,19 @@ server:
   port: 8900
 
 spring:
-  application:
-    name: kirin-config-server
-  cloud:
-    config:
-      server:
-        git:
-          uri: https://github.com/zivbob/kirin
-          search-paths: config-file
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    password: admin
+    username: admin
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8888/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
