@@ -40,6 +40,7 @@
         <lombok.version>1.18.8</lombok.version>
         <hutool.version>4.5.16</hutool.version>
         <zipkin.version>2.10.1</zipkin.version>
+        <spring-boot-admin.version>2.1.5</spring-boot-admin.version>
     </properties>
 
     <!--公共依赖-->

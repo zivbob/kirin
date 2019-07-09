@@ -1,0 +1,46 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: kirin-monitor
+  profiles:
+    active:
+      - secure
+
+eureka:   #<1>
+  instance:
+    # 心跳的时间间隔
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+  client:
+    # 从eureka服务器注册表中获取注册信息的时间间隔
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8888/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  #<2>
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+---
+spring:
+  profiles: insecure
+
+---
+spring:
+  profiles: secure
+  security:
+    user:
+      name: "admin"
+      password: "admin"
+eureka:
+  instance:
+    metadata-map:
+      user.name: ${spring.security.user.name}         #These two are needed so that the server
+      user.password: ${spring.security.user.password} #can access the protected client endpoints
