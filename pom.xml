@@ -21,6 +21,9 @@
         <module>kirin-data-service</module>
         <module>kirin-data-ribbon</module>
         <module>kirin-data-feign</module>
+        <module>kirin-config-server</module>
+        <module>kirin-zuul</module>
+        <module>kirin-zipkin</module>
     </modules>
 
     <properties>
