@@ -13,6 +13,10 @@ eureka:
     service-url:
       defaultZone: http://localhost:8888/eureka/
 management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
   health:
     refresh:
       enabled: false

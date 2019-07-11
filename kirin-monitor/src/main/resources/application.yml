@@ -10,11 +10,11 @@ spring:
 
 eureka:   #<1>
   instance:
-    # ĞÄÌøµÄÊ±¼ä¼ä¸ô
+    # å¿ƒè·³çš„æ—¶é—´é—´éš”
     leaseRenewalIntervalInSeconds: 10
     health-check-url-path: /actuator/health
   client:
-    # ´Óeureka·şÎñÆ÷×¢²á±íÖĞ»ñÈ¡×¢²áĞÅÏ¢µÄÊ±¼ä¼ä¸ô
+    # ä»eurekaæœåŠ¡å™¨æ³¨å†Œè¡¨ä¸­è·å–æ³¨å†Œä¿¡æ¯çš„æ—¶é—´é—´éš”
     registryFetchIntervalSeconds: 5
     serviceUrl:
       defaultZone: http://localhost:8888/eureka/
