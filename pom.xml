@@ -24,6 +24,7 @@
         <module>kirin-config-server</module>
         <module>kirin-zuul</module>
         <module>kirin-zipkin</module>
+        <module>kirin-common</module>
     </modules>
 
     <properties>
