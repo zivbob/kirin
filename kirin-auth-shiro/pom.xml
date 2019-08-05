@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ziv</groupId>
+        <artifactId>kirin</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <groupId>com.ziv</groupId>
+    <artifactId>kirin-auth-shiro</artifactId>
+    <version>1.0</version>
+    <name>kirin-auth-shiro</name>
+    <description>shiro权限控制</description>
+    <packaging>jar</packaging>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ziv</groupId>
+            <artifactId>kirin-common</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+</project>
