@@ -1,11 +1,14 @@
 package response;
 
+import lombok.Getter;
+
 /**
  * 公共请求响应结果
  *
  * @author ziv
  * @date 2019-08-05
  */
+@Getter
 public class JsonResult<T> {
 
     /**
@@ -56,4 +59,6 @@ public class JsonResult<T> {
     public static JsonResult error() {
         return new JsonResult(ResultCode.SYS_ERROR);
     }
+
+
 }
