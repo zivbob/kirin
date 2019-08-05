@@ -13,6 +13,9 @@ public enum  ResultCode {
      */
     SUCCESS("200", "成功"),
 
+    /** 系统错误 */
+    SYS_ERROR("402", "系统错误"),
+
     /**
      * 未知的错误
      */
