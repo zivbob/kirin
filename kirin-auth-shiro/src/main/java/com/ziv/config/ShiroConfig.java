@@ -1,10 +1,13 @@
 package com.ziv.config;
 
 import com.ziv.auth.AuthFilter;
+import com.ziv.auth.AuthRealm;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,10 +23,20 @@ import java.util.Map;
  */
 @Configuration
 public class ShiroConfig {
+    @Bean
+    public SessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionValidationSchedulerEnabled(true);
+        //
+        sessionManager.setSessionIdCookieEnabled(false);
+        return sessionManager;
+    }
 
     @Bean
-    public SecurityManager securityManager() {
+    public SecurityManager securityManager(AuthRealm realm, SessionManager sessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        securityManager.setRealm(realm);
+        securityManager.setSessionManager(sessionManager);
         return securityManager;
     }
 

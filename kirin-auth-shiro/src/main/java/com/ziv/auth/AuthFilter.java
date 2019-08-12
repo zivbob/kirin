@@ -7,7 +7,6 @@ import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -43,6 +42,8 @@ public class AuthFilter extends AuthenticatingFilter {
         log.info("没权限");
         try {
             //处理登录失败的异常
+            log.info("异常");
+            log.info(e.getMessage());
             Throwable throwable = e.getCause() == null ? e : e.getCause();
             response.getWriter().print("false");
         } catch (IOException e1) {
