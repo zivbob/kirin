@@ -64,6 +64,7 @@ public class AuthRealm extends AuthorizingRealm {
         Set<String> permsSet = new HashSet<>();
         permsSet.add("admin");
         permsSet.add("test");
+        permsSet.add("user:teach");
         authInfo.setPermsSet(permsSet);
         authInfo.setToken(token);
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(authInfo, token, getName());

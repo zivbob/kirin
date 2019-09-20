@@ -24,12 +24,14 @@ public class AuthFilter extends AuthenticatingFilter {
         /*if (token == null || "".equals(token)) {
             return null;
         }*/
+        log.info("createToken:" + token);
         return new AuthToken(token);
     }
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         String token = getRequestToken((HttpServletRequest)request);
+        log.info("token" + token);
         if (token == null && "".equals(token)) {
             return false;
         } else {
