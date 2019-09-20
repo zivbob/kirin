@@ -30,6 +30,7 @@ public class AuthFilter extends AuthenticatingFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+        // TODO token验证
         String token = getRequestToken((HttpServletRequest)request);
         log.info("token" + token);
         if (token == null && "".equals(token)) {
