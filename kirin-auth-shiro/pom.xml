@@ -32,10 +32,15 @@
             <version>1.0</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
             <version>1.4.1</version>
+        </dependency>-->
+        <dependency>
+            <groupId>com.ziv.plugin.auth.shiro</groupId>
+            <artifactId>kirin-plugin-auth-shiro</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 </project>

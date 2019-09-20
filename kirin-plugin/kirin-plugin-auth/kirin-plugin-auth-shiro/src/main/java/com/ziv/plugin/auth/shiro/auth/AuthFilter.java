@@ -1,4 +1,4 @@
-package com.ziv.auth;
+package com.ziv.plugin.auth.shiro.auth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
@@ -30,7 +30,7 @@ public class AuthFilter extends AuthenticatingFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        // TODO token验证
+        // TODO token验证完善
         String token = getRequestToken((HttpServletRequest)request);
         log.info("token" + token);
         if (token == null && "".equals(token)) {

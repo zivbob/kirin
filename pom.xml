@@ -26,6 +26,7 @@
         <module>kirin-zipkin</module>
         <module>kirin-common</module>
         <module>kirin-auth-shiro</module>
+        <module>kirin-plugin</module>
     </modules>
 
     <properties>

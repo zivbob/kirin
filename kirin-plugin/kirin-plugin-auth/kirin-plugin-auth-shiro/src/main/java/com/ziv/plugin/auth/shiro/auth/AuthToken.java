@@ -1,4 +1,4 @@
-package com.ziv.auth;
+package com.ziv.plugin.auth.shiro.auth;
 
 import org.apache.shiro.authc.AuthenticationToken;
 
