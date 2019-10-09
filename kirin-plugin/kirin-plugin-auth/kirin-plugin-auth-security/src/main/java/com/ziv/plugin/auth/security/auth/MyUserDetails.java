@@ -1,32 +1,45 @@
-package com.ziv.common.config;
+package com.ziv.plugin.auth.security.auth;
 
-import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
-@Data
-public class MyUserDetail implements UserDetails {
+/**
+ * 用户信息实体类
+ *
+ * @author ziv
+ * @date 2019-10-08
+ */
+public class MyUserDetails implements UserDetails {
 
-    private SysUser user;
+    /**
+     * 用户名
+     */
+    private String username;
 
-    public MyUserDetail(SysUser user) {
-        this.user = user;
-    }
+    /**
+     * 密码
+     */
+    private String password;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
+    public MyUserDetails (String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return user.getUserName();
+        return this.username;
     }
 
     @Override

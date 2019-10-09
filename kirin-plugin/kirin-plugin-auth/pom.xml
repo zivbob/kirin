@@ -18,5 +18,6 @@
 
     <modules>
         <module>kirin-plugin-auth-shiro</module>
+        <module>kirin-plugin-auth-security</module>
     </modules>
 </project>
