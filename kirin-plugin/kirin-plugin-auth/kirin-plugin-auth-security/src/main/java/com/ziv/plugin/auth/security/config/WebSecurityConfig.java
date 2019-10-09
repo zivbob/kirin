@@ -67,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 添加token过滤器
         http.addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
-                .antMatchers("/sys/login", "/test/**", "/password/**","/**/**.**", "/actuator/**")
+                .antMatchers("/sys/login", "/test/**", "/actuator/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
