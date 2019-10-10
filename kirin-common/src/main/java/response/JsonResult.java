@@ -60,5 +60,9 @@ public class JsonResult<T> {
         return new JsonResult(ResultCode.SYS_ERROR);
     }
 
+    public static JsonResult error(String errorMsg) {
+        return new JsonResult(ResultCode.SYS_ERROR, errorMsg);
+    }
+
 
 }
