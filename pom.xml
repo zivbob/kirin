@@ -27,6 +27,7 @@
         <module>kirin-common</module>
         <module>kirin-auth-shiro</module>
         <module>kirin-plugin</module>
+        <module>kirin-user</module>
     </modules>
 
     <properties>
