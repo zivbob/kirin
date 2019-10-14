@@ -27,7 +27,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.ziv</groupId>
+            <groupId>com.ziv.common</groupId>
             <artifactId>kirin-common</artifactId>
             <version>1.0</version>
         </dependency>

@@ -1,11 +1,11 @@
 package com.ziv.controller;
 
+import com.ziv.common.response.JsonResult;
 import com.ziv.entity.SysUser;
 import com.ziv.plugin.redis.utils.RedisHashUtils;
 import com.ziv.plugin.redis.utils.RedisUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import response.JsonResult;
 import javax.annotation.Resource;
 
 @RestController

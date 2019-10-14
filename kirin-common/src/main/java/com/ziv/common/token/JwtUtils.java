@@ -1,14 +1,11 @@
-package token;
+package com.ziv.common.token;
 
 import com.alibaba.fastjson.JSON;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
-import net.minidev.json.JSONObject;
 
 import java.text.ParseException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * jwtToken工具类
@@ -17,12 +14,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2019-10-12
  */
 public class JwtUtils {
-
-    private static final String PAYLOAD = "plyLoad";
-
-    private static final String EXPIRE = "expire";
-
-    private static final String SECRET = "XX#$%()(#*!()!KL<><MQLMNQNQJQK sdfkjsdrow32234545fdf>?N<:{LWPW";
+    /**
+     * token加解密秘钥
+     */
+    private static final String SECRET = "3n8scXQMZVObuUN6l#e^4XPgJKt#3I@#";
 
     public static <T> String generatorToken(T t) throws JOSEException {
         // 创建头部

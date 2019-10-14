@@ -9,6 +9,7 @@
         <version>1.0</version>
     </parent>
 
+    <groupId>com.ziv.common</groupId>
     <artifactId>kirin-common</artifactId>
     <version>1.0</version>
     <name>kirin-common</name>

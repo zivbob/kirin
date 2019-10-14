@@ -1,4 +1,4 @@
-package response;
+package com.ziv.common.response;
 
 /**
  * 公共响应状态枚举类

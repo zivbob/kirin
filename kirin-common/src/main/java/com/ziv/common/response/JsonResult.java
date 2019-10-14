@@ -1,4 +1,4 @@
-package response;
+package com.ziv.common.response;
 
 import lombok.Getter;
 

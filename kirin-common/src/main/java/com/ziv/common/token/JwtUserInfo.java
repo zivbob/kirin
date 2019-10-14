@@ -1,4 +1,4 @@
-package token;
+package com.ziv.common.token;
 
 import lombok.Data;
 

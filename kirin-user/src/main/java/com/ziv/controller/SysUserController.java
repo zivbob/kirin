@@ -1,13 +1,12 @@
 package com.ziv.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ziv.common.response.JsonResult;
 import com.ziv.entity.SysUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import com.ziv.service.SysUserService;
-import response.JsonResult;
 
 /**
  * 控制类

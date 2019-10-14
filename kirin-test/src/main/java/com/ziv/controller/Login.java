@@ -1,5 +1,6 @@
 package com.ziv.controller;
 
+import com.ziv.common.response.JsonResult;
 import com.ziv.plugin.auth.security.auth.JwtTokenUtil;
 import com.ziv.plugin.auth.security.auth.MyUserDetails;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import response.JsonResult;
 
 import javax.annotation.Resource;
 

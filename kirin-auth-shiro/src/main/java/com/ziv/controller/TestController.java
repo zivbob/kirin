@@ -1,12 +1,12 @@
 package com.ziv.controller;
 
+import com.ziv.common.response.JsonResult;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import response.JsonResult;
 
 @RestController
 @RequestMapping(value = "test")
