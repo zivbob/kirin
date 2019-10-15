@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>kirin-plugin</artifactId>
+        <groupId>com.ziv.plugin</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ziv.plugin.exception</groupId>
+    <artifactId>kirin-plugin-exception</artifactId>
+    <version>${kirin.version}</version>
+    <name>kirin-plugin-exception</name>
+    <description>异常插件</description>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ziv.common</groupId>
+            <artifactId>kirin-common</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+</project>

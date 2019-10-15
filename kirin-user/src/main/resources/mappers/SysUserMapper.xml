@@ -7,4 +7,12 @@
         FROM sys_user
         WHERE deleteFlag = 0
     </select>
+
+    <!--通过用户名查询用户-->
+    <select id="selectByUserName" parameterType="string" resultType="com.ziv.entity.SysUser">
+        SELECT userKey, userName, password
+        FROM sys_user
+        WHERE deleteFlag = 0
+        AND userName = #{userName}
+    </select>
 </mapper>

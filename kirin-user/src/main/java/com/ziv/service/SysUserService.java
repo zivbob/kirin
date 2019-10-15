@@ -2,6 +2,7 @@ package com.ziv.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ziv.common.token.AuthorisationInfo;
 import com.ziv.entity.SysUser;
 
 /**
@@ -25,4 +26,11 @@ public interface SysUserService extends IService<SysUser> {
      * @return Page<SysUser>
      */
     Page<SysUser> findPage(Integer pageNo, Integer pageSize);
+
+    /**
+     * 登录
+     * @param userName 用户名
+     * @return SysUser
+     */
+    SysUser selectByUserName(String userName);
 }

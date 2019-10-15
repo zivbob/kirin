@@ -20,4 +20,11 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return Page<SysUser>
      */
     Page<SysUser> findPage(Page<SysUser> page);
+
+    /**
+     * 通过用户名查询用户信息
+     * @param userName 用户名
+     * @return SysUser
+     */
+    SysUser selectByUserName(String userName);
 }

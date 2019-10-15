@@ -13,13 +13,20 @@ public enum  ResultCode {
      */
     SUCCESS("200", "成功"),
 
-    /** 系统错误 */
-    SYS_ERROR("402", "系统错误"),
+    /**
+     * 系统异常
+     */
+    SYS_ERROR("500", "系统错误"),
+
+    /**
+     * 登录异常
+     */
+    USER_NOT_EXIST("401", "用户不存在或账号名密码不对"),
 
     /**
      * 未知的错误
      */
-    UNKNOWN_ERROR("1000", "未知错误");
+    UNKNOWN_ERROR("9999", "未知错误");
 
     private String code;
 
@@ -37,6 +44,4 @@ public enum  ResultCode {
     public String getMsg() {
         return this.msg;
     }
-
-
 }

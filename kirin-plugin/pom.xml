@@ -19,5 +19,6 @@
     <modules>
         <module>kirin-plugin-auth</module>
         <module>kirin-plugin-redis</module>
+        <module>kirin-plugin-exception</module>
     </modules>
 </project>

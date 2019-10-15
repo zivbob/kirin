@@ -27,7 +27,7 @@ public class AuthRealm extends AuthorizingRealm {
     }
 
     /**
-     * 权限验证
+     * 权限验证（验证权限时调用）
      * @param principalCollection
      * @return AuthorizationInfo
      */
@@ -43,7 +43,7 @@ public class AuthRealm extends AuthorizingRealm {
     }
 
     /**
-     * 身份认证
+     * 身份认证（登录时调用）
      * @param authenticationToken
      * @return AuthenticationInfo
      * @throws AuthenticationException
