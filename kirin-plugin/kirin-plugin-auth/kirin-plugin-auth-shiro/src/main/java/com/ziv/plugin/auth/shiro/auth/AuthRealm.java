@@ -1,5 +1,7 @@
 package com.ziv.plugin.auth.shiro.auth;
 
+import com.ziv.common.token.AuthorisationInfo;
+import com.ziv.plugin.redis.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -8,6 +10,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +24,9 @@ import java.util.Set;
 @Component
 public class AuthRealm extends AuthorizingRealm {
 
+    @Resource
+    private RedisUtils redisUtils;
+
     @Override
     public boolean supports(AuthenticationToken token) {
         return token instanceof AuthToken;
@@ -33,11 +39,11 @@ public class AuthRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        log.info("进入权限验证");
-        AuthInfo authInfo = (AuthInfo) principalCollection.getPrimaryPrincipal();
-        log.info("token:" + authInfo.getToken());
-        Set<String> permsSet = authInfo.getPermsSet();
-        SimpleAuthorizationInfo info =new SimpleAuthorizationInfo();
+        log.info("权限验证");
+        AuthorisationInfo authInfo = (AuthorisationInfo) principalCollection.getPrimaryPrincipal();
+        // 获取用户权限
+        Set<String> permsSet = authInfo.getPermissionsSet();
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setStringPermissions(permsSet);
         return info;
     }
@@ -50,23 +56,15 @@ public class AuthRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        log.info("进入身份验证");
+        log.info("身份认证");
         String token = (String) authenticationToken.getPrincipal();
-        if (token == null) {
-            throw new IncorrectCredentialsException("缺少token");
-        }
-
-        if (!token.equals("123456")) {
+        // 从redis获取token
+        AuthorisationInfo authInfo = redisUtils.get(token, AuthorisationInfo.class);
+        if (authInfo == null) {
             throw new IncorrectCredentialsException("token失效，请重新登录");
         }
-
-        AuthInfo authInfo = new AuthInfo();
-        Set<String> permsSet = new HashSet<>();
-        permsSet.add("admin");
-        permsSet.add("test");
-        permsSet.add("user:teach");
-        authInfo.setPermsSet(permsSet);
-        authInfo.setToken(token);
+        // 更新token有效期
+        redisUtils.setExpire(token);
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(authInfo, token, getName());
         return info;
     }

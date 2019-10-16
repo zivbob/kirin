@@ -28,6 +28,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.ziv.common</groupId>
             <artifactId>kirin-common</artifactId>
             <version>1.0</version>

@@ -21,7 +21,17 @@ public enum  ResultCode {
     /**
      * 登录异常
      */
-    USER_NOT_EXIST("401", "用户不存在或账号名密码不对"),
+    USER_NOT_EXIST("1001", "用户不存在或账号名密码不对"),
+
+    /**
+     * token无效
+     */
+    TOKEN_INVALIDATE("1002", "无效的token"),
+
+    /**
+     * 缺少权限
+     */
+    LOSE_PERMISSION("1003", "缺少权限"),
 
     /**
      * 未知的错误

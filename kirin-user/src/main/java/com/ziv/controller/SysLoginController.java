@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 系统登录控制类
@@ -40,12 +42,18 @@ public class SysLoginController {
             JwtUserInfo userInfo = new JwtUserInfo();
             userInfo.setUserKey(user.getUserKey());
             userInfo.setUserName(user.getUserName());
-            // 生成token
-            String token = JwtUtils.generatorToken(userInfo);
-            // token存入缓存
-            redisUtils.setWithDefaultExpire(token, userInfo);
+            Set<String> perSet = new HashSet<>();
+            perSet.add("admin");
+            perSet.add("sysMng");
+            perSet.add("test");
+
             AuthorisationInfo authorisationInfo = new AuthorisationInfo();
             authorisationInfo.setUserInfo(userInfo);
+            authorisationInfo.setPermissionsSet(perSet);
+            // 生成token
+            String token = JwtUtils.generatorToken(authorisationInfo);
+            // token存入缓存
+            redisUtils.setWithDefaultExpire(token, userInfo);
             authorisationInfo.setToken(token);
             result = JsonResult.success(authorisationInfo);
         } else{

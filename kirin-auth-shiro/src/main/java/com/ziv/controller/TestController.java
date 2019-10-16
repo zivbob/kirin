@@ -17,7 +17,7 @@ public class TestController {
         return JsonResult.success("you got it");
     }
 
-    @RequiresPermissions(value = {"user:teach"})
+    @RequiresPermissions(value = {"test1"})
     @GetMapping("per")
     public JsonResult getInfo() {
         Subject subject = SecurityUtils.getSubject();
