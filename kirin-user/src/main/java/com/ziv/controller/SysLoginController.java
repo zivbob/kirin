@@ -53,7 +53,7 @@ public class SysLoginController {
             // 生成token
             String token = JwtUtils.generatorToken(authorisationInfo);
             // token存入缓存
-            redisUtils.setWithDefaultExpire(token, userInfo);
+            redisUtils.setWithDefaultExpire(token, authorisationInfo);
             authorisationInfo.setToken(token);
             result = JsonResult.success(authorisationInfo);
         } else{
