@@ -1,8 +1,12 @@
 package com.ziv.plugin.auth.security.auth;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * 用户信息实体类
@@ -22,14 +26,20 @@ public class MyUserDetails implements UserDetails {
      */
     private String password;
 
+    /**
+     * 权限
+     */
+    private Set<String> permission;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.permission.stream().map(item -> new SimpleGrantedAuthority(item)).collect(Collectors.toSet());
     }
 
-    public MyUserDetails (String username, String password) {
+    public MyUserDetails (String username, String password, Set<String> permission) {
         this.username = username;
         this.password = password;
+        this.permission = permission;
     }
 
     @Override

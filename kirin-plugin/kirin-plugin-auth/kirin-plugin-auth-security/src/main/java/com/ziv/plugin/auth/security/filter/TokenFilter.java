@@ -1,10 +1,12 @@
 package com.ziv.plugin.auth.security.filter;
 
-import com.ziv.plugin.auth.security.auth.JwtTokenUtil;
+import com.ziv.common.token.AuthorisationInfo;
+import com.ziv.plugin.auth.security.auth.MyUserDetails;
+import com.ziv.plugin.redis.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
@@ -25,32 +27,22 @@ import java.io.IOException;
 public class TokenFilter extends OncePerRequestFilter {
 
     @Resource
-    private JwtTokenUtil tokenUtil;
-
-    @Resource
-    private UserDetailsService userDetailsService;
+    private RedisUtils redisUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        // TODO token验证完善
         String token = request.getHeader("token");
-        log.info("token" + token);
+        // 验证token
         if (!StringUtils.isEmpty(token)) {
-            // 验证token
-            try {
-                // 从token获取用户名
-                String userName = tokenUtil.getUserNameFromToken(token);
-                // 获取用户信息
-                if (!StringUtils.isEmpty(userName)) {
-                    // 登录
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-                    UsernamePasswordAuthenticationToken authenticationToken =new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                }
-            } catch (Exception e) {
-                log.error("登录失败！");
-                log.error(e.getMessage());
+            // 从redis获取用户信息
+            AuthorisationInfo authorisationInfo = redisUtils.get(token, AuthorisationInfo.class);
+            if (authorisationInfo != null) {
+                MyUserDetails userDetails = new MyUserDetails(authorisationInfo.getUserInfo().getUserName(), null, authorisationInfo.getPermissionsSet());
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            } else {
+                throw new BadCredentialsException("无效token");
             }
         }
         chain.doFilter(request, response);
