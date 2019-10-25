@@ -2,6 +2,8 @@ package com.ziv.common.token;
 
 import lombok.Data;
 
+import java.util.Set;
+
 /**
  * 用户信息
  *
@@ -11,7 +13,13 @@ import lombok.Data;
 @Data
 public class JwtUserInfo {
 
-    private String userKey;
-
+    /**
+     * 用户名
+     */
     private String userName;
+
+    /**
+     * 用户权限
+     */
+    private Set<String> permissions;
 }

@@ -1,6 +1,9 @@
 package com.ziv.plugin.auth.shiro.auth;
 
 import com.ziv.common.token.AuthorisationInfo;
+import com.ziv.common.token.InvalidateTokenException;
+import com.ziv.common.token.JwtUserInfo;
+import com.ziv.common.token.JwtUtils;
 import com.ziv.plugin.redis.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
@@ -42,7 +45,7 @@ public class AuthRealm extends AuthorizingRealm {
         log.info("权限验证");
         AuthorisationInfo authInfo = (AuthorisationInfo) principalCollection.getPrimaryPrincipal();
         // 获取用户权限
-        Set<String> permsSet = authInfo.getPermissionsSet();
+        Set<String> permsSet = authInfo.getUserInfo().getPermissions();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setStringPermissions(permsSet);
         return info;
@@ -58,14 +61,22 @@ public class AuthRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         log.info("身份认证");
         String token = (String) authenticationToken.getPrincipal();
-        // 从redis获取token
-        AuthorisationInfo authInfo = redisUtils.get(token, AuthorisationInfo.class);
-        if (authInfo == null) {
-            throw new IncorrectCredentialsException("token失效，请重新登录");
+        // 解析token获取用户信息
+        try {
+            // 验证token
+            JwtUtils.parseJwt(token);
+            // 从redis获取token
+            AuthorisationInfo authInfo = redisUtils.get(token, AuthorisationInfo.class);
+            if (authInfo == null) {
+                throw new IncorrectCredentialsException("token失效，请重新登录");
+            }
+            // 更新token有效期
+            redisUtils.setExpire(token);
+            SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(authInfo, token, getName());
+            return info;
+        } catch (InvalidateTokenException e) {
+            e.printStackTrace();
+            throw new AuthenticationException(e.getMessage());
         }
-        // 更新token有效期
-        redisUtils.setExpire(token);
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(authInfo, token, getName());
-        return info;
     }
 }

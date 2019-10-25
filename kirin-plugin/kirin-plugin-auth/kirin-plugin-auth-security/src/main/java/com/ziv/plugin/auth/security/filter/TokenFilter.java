@@ -1,6 +1,8 @@
 package com.ziv.plugin.auth.security.filter;
 
 import com.ziv.common.token.AuthorisationInfo;
+import com.ziv.common.token.InvalidateTokenException;
+import com.ziv.common.token.JwtUtils;
 import com.ziv.plugin.auth.security.auth.MyUserDetails;
 import com.ziv.plugin.redis.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -32,17 +34,26 @@ public class TokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String token = request.getHeader("token");
-        // 验证token
         if (!StringUtils.isEmpty(token)) {
-            // 从redis获取用户信息
-            AuthorisationInfo authorisationInfo = redisUtils.get(token, AuthorisationInfo.class);
-            if (authorisationInfo != null) {
-                MyUserDetails userDetails = new MyUserDetails(authorisationInfo.getUserInfo().getUserName(), null, authorisationInfo.getPermissionsSet());
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            } else {
-                throw new BadCredentialsException("无效token");
+            try {
+                // 验证token
+                JwtUtils.parseJwt(token);
+                // 从redis获取用户信息
+                AuthorisationInfo authorisationInfo = redisUtils.get(token, AuthorisationInfo.class);
+                if (authorisationInfo != null) {
+                    MyUserDetails userDetails = new MyUserDetails(authorisationInfo.getUserInfo().getUserName(),
+                            null, authorisationInfo.getUserInfo().getPermissions());
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    // 更新redis中token有效期
+                    redisUtils.setExpire(token);
+                } else {
+                    throw new BadCredentialsException("无效token");
+                }
+            } catch (InvalidateTokenException e) {
+                e.printStackTrace();
+                throw new BadCredentialsException(e.getMessage());
             }
         }
         chain.doFilter(request, response);

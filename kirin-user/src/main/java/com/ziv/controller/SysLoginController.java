@@ -9,6 +9,7 @@ import com.ziv.common.token.JwtUtils;
 import com.ziv.entity.SysUser;
 import com.ziv.plugin.redis.utils.RedisUtils;
 import com.ziv.service.SysUserService;
+import org.jose4j.lang.JoseException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,23 +36,26 @@ public class SysLoginController {
     private RedisUtils redisUtils;
 
     @GetMapping(value = "login")
-    public JsonResult<AuthorisationInfo> login (String userName, String password) throws JOSEException {
+    public JsonResult<AuthorisationInfo> login (String userName, String password) throws JoseException {
         JsonResult result;
+        // 获取用户
         SysUser user = sysUserService.selectByUserName(userName);
         if (user != null && new BCryptPasswordEncoder().matches(password, user.getPassword())) {
-            JwtUserInfo userInfo = new JwtUserInfo();
-            userInfo.setUserKey(user.getUserKey());
-            userInfo.setUserName(user.getUserName());
+            // 获取用户权限
             Set<String> perSet = new HashSet<>();
             perSet.add("admin");
             perSet.add("sysMng");
             perSet.add("test");
-
+            // 封装用户token信息
+            JwtUserInfo userInfo = new JwtUserInfo();
+            userInfo.setUserName(user.getUserName());
+            userInfo.setPermissions(perSet);
+            // 封装用户信息
             AuthorisationInfo authorisationInfo = new AuthorisationInfo();
             authorisationInfo.setUserInfo(userInfo);
-            authorisationInfo.setPermissionsSet(perSet);
+            authorisationInfo.setUserKey(user.getUserKey());
             // 生成token
-            String token = JwtUtils.generatorToken(authorisationInfo);
+            String token = JwtUtils.generateJwt(userInfo);
             // token存入缓存
             redisUtils.setWithDefaultExpire(token, authorisationInfo);
             authorisationInfo.setToken(token);

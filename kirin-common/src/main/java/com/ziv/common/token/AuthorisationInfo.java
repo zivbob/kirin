@@ -15,7 +15,7 @@ public class AuthorisationInfo {
 
     private JwtUserInfo userInfo;
 
-    private Set<String> permissionsSet;
+    private String userKey;
 
     private String token;
 }
