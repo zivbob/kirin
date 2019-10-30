@@ -6,6 +6,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import org.jose4j.jwa.AlgorithmConstraints;
 import org.jose4j.jwk.RsaJsonWebKey;
+import org.jose4j.jwk.RsaJwkGenerator;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
@@ -53,11 +54,11 @@ public class JwtUtils {
     /**
      * 生成jwt
      * @param jwtUserInfo 用户信息
+     * @param rsaJsonWebKey token秘钥对
      * @return String
      * @throws JoseException
      */
-    public static String generateJwt(JwtUserInfo jwtUserInfo) throws JoseException {
-        RsaJsonWebKey rsaJsonWebKey = RsaJsonWebKeyUtil.getRsaJsonWebKey();
+    public static String generateJwt(RsaJsonWebKey rsaJsonWebKey, JwtUserInfo jwtUserInfo) throws JoseException {
         // 创建claims，这将是JWT的内容
         JwtClaims claims = new JwtClaims();
         // 签发人
@@ -95,11 +96,11 @@ public class JwtUtils {
     /**
      * 解析jwt
      * @param jwt
+     * @param rsaJsonWebKey token秘钥对
      * @return Object
      * @throws InvalidateTokenException
      */
-    public static JwtUserInfo parseJwt(String jwt) throws InvalidateTokenException {
-        RsaJsonWebKey rsaJsonWebKey = RsaJsonWebKeyUtil.getRsaJsonWebKey();
+    public static JwtUserInfo parseJwt(String jwt, RsaJsonWebKey rsaJsonWebKey) throws InvalidateTokenException {
         // 设置解析器
         JwtConsumer jwtConsumer = new JwtConsumerBuilder()
                 // jwt必须包含过期时间
@@ -136,7 +137,7 @@ public class JwtUtils {
     }
 
     public static void main(String[] args) throws JoseException, InvalidateTokenException, InterruptedException {
-        JwtUserInfo userInfo = new JwtUserInfo();
+        /*JwtUserInfo userInfo = new JwtUserInfo();
         Set<String> perSet = new HashSet<>();
         perSet.add("admin");
         perSet.add("sysMng");
@@ -146,6 +147,8 @@ public class JwtUtils {
         String jwt = generateJwt(userInfo);
         System.out.println(jwt);
         Object obj = parseJwt(jwt);
-        System.out.println(obj);
+        System.out.println(obj);*/
+        RsaJsonWebKey key = RsaJwkGenerator.generateJwk(2048);
+        System.err.println(key.getKey());
     }
 }

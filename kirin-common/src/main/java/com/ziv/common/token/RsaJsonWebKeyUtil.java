@@ -1,13 +1,15 @@
 package com.ziv.common.token;
 
+import com.alibaba.fastjson.JSON;
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jwk.RsaJwkGenerator;
 import org.jose4j.lang.JoseException;
 
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * 秘钥生成类
+ * 秘钥生成类（单系统是可利用本类获取jwk秘钥）
  *
  * @author ziv
  * @date 2019-10-24
@@ -30,7 +32,7 @@ public class RsaJsonWebKeyUtil {
              */
             this.rsaJsonWebKey = RsaJwkGenerator.generateJwk(2048);
             // 给JWK一个密钥ID (kid)，这是最礼貌的做法
-            this.rsaJsonWebKey.setKeyId(UUID.randomUUID().toString());
+            this.rsaJsonWebKey.setKeyId("kid");
         } catch (JoseException e) {
             e.printStackTrace();
         }

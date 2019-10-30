@@ -1,11 +1,14 @@
 package com.ziv.plugin.auth.security.filter;
 
+import com.alibaba.fastjson.JSON;
 import com.ziv.common.token.AuthorisationInfo;
 import com.ziv.common.token.InvalidateTokenException;
 import com.ziv.common.token.JwtUtils;
 import com.ziv.plugin.auth.security.auth.MyUserDetails;
 import com.ziv.plugin.redis.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.jose4j.jwk.RsaJsonWebKey;
+import org.jose4j.lang.JoseException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +31,11 @@ import java.io.IOException;
 @Slf4j
 public class TokenFilter extends OncePerRequestFilter {
 
+    /**
+     * jwk在redis中的key值
+     */
+    private static final String JWK_IN_REDIS = "jwk";
+
     @Resource
     private RedisUtils redisUtils;
 
@@ -36,8 +44,11 @@ public class TokenFilter extends OncePerRequestFilter {
         String token = request.getHeader("token");
         if (!StringUtils.isEmpty(token)) {
             try {
+                // TODO 系统集成网关的时候token验证迁移到网关过滤器
+                String jwkStr = redisUtils.get(JWK_IN_REDIS);
+                RsaJsonWebKey rsaJsonWebKey = new RsaJsonWebKey(JSON.parseObject(jwkStr));
                 // 验证token
-                JwtUtils.parseJwt(token);
+                JwtUtils.parseJwt(token, rsaJsonWebKey);
                 // 从redis获取用户信息
                 AuthorisationInfo authorisationInfo = redisUtils.get(token, AuthorisationInfo.class);
                 if (authorisationInfo != null) {
@@ -51,7 +62,7 @@ public class TokenFilter extends OncePerRequestFilter {
                 } else {
                     throw new BadCredentialsException("无效token");
                 }
-            } catch (InvalidateTokenException e) {
+            } catch (InvalidateTokenException | JoseException e) {
                 e.printStackTrace();
                 throw new BadCredentialsException(e.getMessage());
             }
