@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: kirin-test
+
+  cloud:
+    nacos:
+      # 服务发现中心
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+      # 配置中心
+      config:
+        server-addr: 127.0.0.1:8848

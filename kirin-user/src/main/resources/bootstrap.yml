@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: kirin-user
+
+  zipkin:
+    base-url: http://localhost:9411
+
+eureka:
+  instance:
+    # 显示IP地址
+    prefer-ip-address: true
+    # 刷新周期
+    lease-renewal-interval-in-seconds: 5
+    # 实例超时时间
+    lease-expiration-duration-in-seconds: 20
+
+  client:
+    service-url:
+      defaultZone: http://localhost:8888/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  health:
+    refresh:
+      enabled: false

@@ -1,7 +1,4 @@
 eureka:
-  instance:
-    # 主机名称
-    hostname: lcoalhost
   client:
     # 是否注册到注册中心
     register-with-eureka: false
@@ -9,3 +6,11 @@ eureka:
     fetch-registry: false
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  instance:
+    # 主机名称
+    hostname: localhost
+    prefer-ip-address: true
+  server:
+    enable-self-preservation: true
+    eviction-interval-timer-in-ms: 5000
+    renewal-percent-threshold: 0.9
