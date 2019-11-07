@@ -1,22 +1,26 @@
 spring:
+  profiles:
+    active: config
+
   application:
-    name: kirin-user
+    name: kirin-test
 
   cloud:
     nacos:
-      # 服务发现
+      # 服务发现中心
       discovery:
         server-addr: 127.0.0.1:8848
+
       # 配置中心
       config:
         server-addr: 127.0.0.1:8848
+        # 配置文件扩展名
+        file-extension: yaml
+        # 配置文件分组
+        group: test
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-
-  health:
-    refresh:
-      enabled: false

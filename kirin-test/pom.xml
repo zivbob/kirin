@@ -19,7 +19,7 @@
     </properties>
 
     <dependencies>
-        <!--nacos配置中心-->
+        <!--nacos注册中心-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
