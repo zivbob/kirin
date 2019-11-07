@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -33,9 +34,14 @@ import java.util.UUID;
 @RequestMapping(value = "sys")
 public class SysLoginController {
     /**
-     * jwk在redis中的key值
+     * jwk私钥
      */
-    private static final String JWK_IN_REDIS = "jwk";
+    private static final String JWK_PRIVATE_KEY = "jwt_privateKey";
+
+    /**
+     * jwk公钥
+     */
+    private static final String JWK_PUBLIC_KEY = "jwt_publicKey";
 
     @Resource
     private SysUserService sysUserService;
@@ -64,9 +70,9 @@ public class SysLoginController {
             authorisationInfo.setUserInfo(userInfo);
             authorisationInfo.setUserKey(user.getUserKey());
             // 获取一个封装在JWK中的RSA密钥对，用于JWT的签名和验证
-            RsaJsonWebKey rsaJsonWebKey = getJwk();
+            String privateKey = getPrivateKey();
             // 生成token
-            String token = JwtUtils.generateJwt(rsaJsonWebKey, userInfo);
+            String token = JwtUtils.generateJwt(privateKey, userInfo);
             // token存入缓存
             redisUtils.setWithDefaultExpire(token, authorisationInfo);
             authorisationInfo.setToken(token);
@@ -84,18 +90,26 @@ public class SysLoginController {
         return JsonResult.success();
     }
 
-    private RsaJsonWebKey getJwk() throws JoseException {
-        RsaJsonWebKey rsaJsonWebKey;
+    /**
+     * 获取加密私钥
+     * @return String
+     * @throws JoseException
+     */
+    private String getPrivateKey() throws JoseException {
+        String privateKey = redisUtils.get(JWK_PRIVATE_KEY);
         // 先从redis中获取
-        String jwkStr = redisUtils.get(JWK_IN_REDIS);
-        if(jwkStr != null && !jwkStr.isEmpty()) {
-            rsaJsonWebKey = new RsaJsonWebKey(JSON.parseObject(jwkStr));
-        } else {
-            rsaJsonWebKey = RsaJwkGenerator.generateJwk(2048);
+        if(privateKey == null || privateKey.isEmpty()) {
+            // 创建JWK加密秘钥对
+            RsaJsonWebKey jwk = RsaJwkGenerator.generateJwk(2048);
             // 给JWK一个密钥ID (kid)，这是最礼貌的做法
-            rsaJsonWebKey.setKeyId(UUID.randomUUID().toString());
-            redisUtils.set(JWK_IN_REDIS, rsaJsonWebKey.toJson());
+            jwk.setKeyId("RSAKey");
+            // 获取公/私钥
+            privateKey = Base64.getEncoder().encodeToString(jwk.getPrivateKey().getEncoded());
+            String publicKey = Base64.getEncoder().encodeToString(jwk.getKey().getEncoded());
+            // 保存到redis
+            redisUtils.set(JWK_PRIVATE_KEY, privateKey);
+            redisUtils.set(JWK_PUBLIC_KEY, publicKey);
         }
-        return rsaJsonWebKey;
+        return privateKey;
     }
 }

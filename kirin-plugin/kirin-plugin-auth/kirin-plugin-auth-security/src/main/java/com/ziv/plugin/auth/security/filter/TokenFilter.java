@@ -32,9 +32,9 @@ import java.io.IOException;
 public class TokenFilter extends OncePerRequestFilter {
 
     /**
-     * jwk在redis中的key值
+     * jwk公钥
      */
-    private static final String JWK_IN_REDIS = "jwk";
+    private static final String JWK_PUBLIC_KEY = "jwt_publicKey";
 
     @Resource
     private RedisUtils redisUtils;
@@ -45,10 +45,9 @@ public class TokenFilter extends OncePerRequestFilter {
         if (!StringUtils.isEmpty(token)) {
             try {
                 // TODO 系统集成网关的时候token验证迁移到网关过滤器
-                String jwkStr = redisUtils.get(JWK_IN_REDIS);
-                RsaJsonWebKey rsaJsonWebKey = new RsaJsonWebKey(JSON.parseObject(jwkStr));
+                String publicKey = redisUtils.get(JWK_PUBLIC_KEY);
                 // 验证token
-                JwtUtils.parseJwt(token, rsaJsonWebKey);
+                JwtUtils.parseJwt(token, publicKey);
                 // 从redis获取用户信息
                 AuthorisationInfo authorisationInfo = redisUtils.get(token, AuthorisationInfo.class);
                 if (authorisationInfo != null) {
@@ -62,7 +61,7 @@ public class TokenFilter extends OncePerRequestFilter {
                 } else {
                     throw new BadCredentialsException("无效token");
                 }
-            } catch (InvalidateTokenException | JoseException e) {
+            } catch (InvalidateTokenException e) {
                 e.printStackTrace();
                 throw new BadCredentialsException(e.getMessage());
             }

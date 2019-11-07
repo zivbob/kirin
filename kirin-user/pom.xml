@@ -22,16 +22,16 @@
         </dependency>
 
         <!--服务注册中心-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
+        </dependency>-->
 
         <!--zipkin链路追踪-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zipkin</artifactId>
-        </dependency>
+        </dependency>-->
 
         <!--健康管理-->
         <dependency>

@@ -28,9 +28,9 @@ import java.util.Set;
 public class AuthRealm extends AuthorizingRealm {
 
     /**
-     * jwk在redis中的key值
+     * jwk公钥
      */
-    private static final String JWK_IN_REDIS = "jwk";
+    private static final String JWK_PUBLIC_KEY = "jwt_publicKey";
 
     @Resource
     private RedisUtils redisUtils;
@@ -69,10 +69,9 @@ public class AuthRealm extends AuthorizingRealm {
         // 解析token获取用户信息
         try {
             // TODO 系统集成网关的时候token验证迁移到网关过滤器
-            String jwkStr = redisUtils.get(JWK_IN_REDIS);
-            RsaJsonWebKey rsaJsonWebKey = new RsaJsonWebKey(JSON.parseObject(jwkStr));
+            String publicKey = redisUtils.get(JWK_PUBLIC_KEY);
             // 验证token
-            JwtUtils.parseJwt(token, rsaJsonWebKey);
+            JwtUtils.parseJwt(token, publicKey);
             // 从redis获取token
             AuthorisationInfo authInfo = redisUtils.get(token, AuthorisationInfo.class);
             if (authInfo == null) {
@@ -82,7 +81,7 @@ public class AuthRealm extends AuthorizingRealm {
             redisUtils.setExpire(token);
             SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(authInfo, token, getName());
             return info;
-        } catch (InvalidateTokenException | JoseException e) {
+        } catch (InvalidateTokenException e) {
             e.printStackTrace();
             throw new AuthenticationException(e.getMessage());
         }

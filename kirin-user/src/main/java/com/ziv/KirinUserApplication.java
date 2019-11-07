@@ -9,5 +9,4 @@ public class KirinUserApplication {
     public static void main(String[] args) {
         SpringApplication.run(KirinUserApplication.class, args);
     }
-
 }
