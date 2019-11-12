@@ -23,6 +23,7 @@
         <module>kirin-data-feign</module>
         <module>kirin-config-server</module>
         <module>kirin-zuul</module>
+        <module>kirin-gateway</module>
         <module>kirin-zipkin</module>
         <module>kirin-common</module>
         <module>kirin-auth-shiro</module>
