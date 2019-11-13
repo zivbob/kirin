@@ -8,12 +8,10 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
 @EnableCircuitBreaker
-@EnableEurekaClient
 @EnableDiscoveryClient
 @EnableFeignClients
 @SpringBootApplication
@@ -24,7 +22,7 @@ public class KirinDataFeignApplication {
         SpringApplication.run(KirinDataFeignApplication.class, args);
     }
 
-    @Bean
+    /*@Bean
     public Sampler defaultSampler() {
         return Sampler.ALWAYS_SAMPLE;
     }
@@ -37,5 +35,5 @@ public class KirinDataFeignApplication {
         registrationBean.addUrlMappings("/hystrix.stream");
         registrationBean.setName("HystrixMetricsStreamServlet");
         return registrationBean;
-    }
+    }*/
 }
